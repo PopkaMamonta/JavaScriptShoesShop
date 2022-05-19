@@ -259,20 +259,39 @@ a {
     float: right;
 }
 .contacts a{
-    color: white;
+    color: #f2f3ee;
 }
 .site-header__left{
     height: 110px;
+    width: 640px;
 }
 .site-header__middle{
      height: 110px;
      text-align: center;
      display: flex;
+     width: 640px;
+}
+
+.site-header__right{
+    height: 110px;
+    width: 640px;
+}
+
+.contacts{
+    margin-right: 7%;
+}
+
+.contacts li{
+    width: 130px;
+}
+
+.button:hover{
+    height: 80px;
+    padding-top: 50px;
 }
 .site-header__middle a{
     font-size: 80px;
-    color: white;
-    font-family: 
+    color: #f2f3ee;
 }
 ul{
     -moz-column-count: 3;
@@ -281,4 +300,19 @@ ul{
     -webkit-column-gap: 20px;
     column-count: 3;
     column-gap: 20px;
+}
+
+.button{
+    height: 50px;
+    width: 130px;
+    font-size: 20px;
+    background-color: #70967f;
+    border-radius:0 0 7px 7px;
+    float: right;
+    text-align: center;
+    transition: .3s ease-in-out;
+}
+
+.hidden{
+    display: none;
 }

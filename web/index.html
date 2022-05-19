@@ -11,67 +11,81 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="scss/style.scss">
         <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" href="css/header-14.css" />
-       
     </head>
     <body>
-        <ul class="site-header">
-        <li class="site-header__left">
-            <input type="checkbox" id="ham-menu">
-            <label for="ham-menu">
-              <div class="hide-des">
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-                <span class="menu-line"></span>
-              </div>
+        <div class="navbar">
+            <ul class="site-header">
+            <li class="site-header__left">
+                <input type="checkbox" id="ham-menu">
+                <label for="ham-menu">
+                  <div class="hide-des">
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                    <span class="menu-line"></span>
+                  </div>
 
-            </label>
-            <div class="full-page-green"></div>
-            <div class="ham-menu">
-              <ul class="centre-text bold-text">
-                <li><div class="marquee">
-                    <div class="marquee__inner" aria-hidden="true">
-                        <span>Каталог</span>
-                        <span>Каталог</span>
-                        <span>Каталог</span>
-                        <span>Каталог</span>
-                    </div>
-                </div></li>
-                <li><div class="marquee">
-                    <div class="marquee__inner" aria-hidden="true">
-                        <span>Админ</span>
-                        <span>Админ</span>
-                        <span>Админ</span>
-                        <span>Админ</span>
-                        <span>Админ</span>
-                    </div>
-                </div></li>
-                <li><div class="marquee">
-                    <div class="marquee__inner" aria-hidden="true">
-                        <span>Showreel</span>
-                        <span>Showreel</span>
-                        <span>Showreel</span>
-                        <span>Showreel</span>
-                    </div>
-                </div></li>
+                </label>
+                <div class="full-page-green"></div>
+                <div class="ham-menu">
+                  <ul class="centre-text bold-text">
+                    <li><div class="marquee">
+                            <div class="marquee__inner" aria-hidden="true" id="menu_catalog">
+                            <span>Каталог -</span>
+                            <span>Каталог -</span>
+                            <span>Каталог -</span>
+                            <span>Каталог -</span>
+                            <span>Каталог</span>
+                        </div>
+                    </div></li>
+                    <li><div class="marquee">
+                            <div class="marquee__inner" aria-hidden="true" id="menu_admin_panel">
+                            <span>Админ -</span>
+                            <span>Админ -</span>
+                            <span>Админ -</span>
+                            <span>Админ -</span>
+                            <span>Админ -</span>
+                            <span>Админ</span>
+                        </div>
+                    </div></li>
+                    <li><div class="marquee">
+                            <div class="marquee__inner" aria-hidden="true" id="menu_add_shoe">
+                            <span>Добавить обувь -</span>
+                            <span>Добавить обувь -</span>
+                            <span>Добавить обувь</span>
 
-              </ul>
-            </div>
-          </li>
-          <li class="site-header__middle">
-            <a href="#" class="brand">ShoesShop</a>
-          </li>
-          <li class="site-header__right">
-            <ul class="contacts">
-              <li><a href="#" class="button">About</a></li>
-              <li><a href="#" class="button">Contact</a></li>
-              <li><a href="#" class="button">Login</a></li>
-              <li><a href="#" class="button">Some action</a></li>
+                        </div>
+                    </div></li>
+                    <li><div class="marquee">
+                            <div class="marquee__inner" aria-hidden="true" id="menu_profile">
+                            <span>Профиль -</span>
+                            <span>Профиль -</span>
+                            <span>Профиль -</span>
+                            <span>Профиль -</span>
+                            <span>Профиль</span>
+                        </div>
+                    </div></li>
+
+                  </ul>
+                </div>
+              </li>
+              <li class="site-header__middle">
+                <a href="#" class="brand" id="menu_list_shoes">ShoesShop</a>
+              </li>
+              <li class="site-header__right">
+                <ul class="contacts">
+                  <li><a href="#" class="button" id="menu_about">О нас</a></li>
+                  <li><a href="#" class="button" id="menu_contacts">Контакты</a></li>
+                  <li><a href="#" class="button" id="menu_another">Другое</a></li>
+                  <li><a href="#" class="button" id="menu_login">Вход</a></li>
+                  <li><a href="#" class="button hidden" id="menu_logout">Выход</a></li>
+                </ul>
+              </li>
             </ul>
-          </li>
-        </ul>
+        </div>    
+        <p class="info" id="info">&nbsp</p>
+        <script type="module" src="js/app.js"></script>
     </body>
 </html>
