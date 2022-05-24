@@ -3,62 +3,26 @@ import {adminModule} from './AdminModule.js';
 import {userModule} from './UserModule.js';
 class ViewModule{
     showLoginForm(){
+        document.getElementById("info").innerHTML = '';
         const content = document.getElementById('content');
-        content.innerHTML = `<div class="container" id="container">
-                                    <div class="form-container sign-up-container">
-                                            <form action="#">
-                                                    <h1>Create Account</h1>
-                                                    <div class="social-container">
-                                                            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                                                            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                                                            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                                                    </div>
-                                                    <span>or use your email for registration</span>
-                                                    <input type="text" placeholder="Name" />
-                                                    <input type="email" placeholder="Email" />
-                                                    <input type="password" placeholder="Password" />
-                                                    <button>Sign Up</button>
-                                            </form>
-                                    </div>
-                                    <div class="form-container sign-in-container">
-                                            <form action="#">
-                                                    <h1>Sign in</h1>
-                                                    <div class="social-container">
-                                                            <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                                                            <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                                                            <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-                                                    </div>
-                                                    <span>or use your account</span>
-                                                    <input type="email" placeholder="Email" />
-                                                    <input type="password" placeholder="Password" />
-                                                    <a href="#">Forgot your password?</a>
-                                                    <button>Sign In</button>
-                                            </form>
-                                    </div>
-                                    <div class="overlay-container">
-                                            <div class="overlay">
-                                                    <div class="overlay-panel overlay-left">
-                                                            <h1>Welcome Back!</h1>
-                                                            <p>To keep connected with us please login with your personal info</p>
-                                                            <button class="ghost" id="signIn">Sign In</button>
-                                                    </div>
-                                                    <div class="overlay-panel overlay-right">
-                                                            <h1>Hello, Friend!</h1>
-                                                            <p>Enter your personal details and start journey with us</p>
-                                                            <button class="ghost" id="signUp">Sign Up</button>
-                                                    </div>
-                                            </div>
-                                    </div>
-                            </div>
-
-                            <footer>
-                                    <p>
-                                            Created with <i class="fa fa-heart"></i> by
-                                            <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
-                                            - Read how I created this and how you can join the challenge
-                                            <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
-                                    </p>
-                            </footer>`;
+        content.innerHTML = `<div id="card">
+                                <div id="card-content">
+                                  <div id="card-title">
+                                    <h2>Вход</h2>
+                                  </div>
+                                  <form method="post" class="form">
+                                    <label for="login" style="padding-top:13px">Логин</label>
+                                    <input id="login" class="form-content" type="login" name="login" autocomplete="on" required />
+                                    <div class="form-border"></div>
+                                    <label for="password" style="padding-top:22px">Пароль
+                                      </label>
+                                    <input id="password" class="form-content" type="password" name="password" required />
+                                    <div class="form-border"></div>
+                                    <input id="btnLogin" type="submit" name="submit" value="Войти" />
+                                    <a href="#" id="registration">Нет еще аккаунта?</a>
+                                  </form>
+                                </div>
+                              </div>`;
         document.getElementById('password').addEventListener('keypress',(e)=>{
             if(e.key === 'Enter'){
                 e.preventDefault();
@@ -79,41 +43,45 @@ class ViewModule{
     showRegistrationForm(){
         document.getElementById("info").innerHTML = '';
         const content = document.getElementById('content');
-        content.innerHTML =`<div class="card border-primary mb-3 mx-auto" style="max-width: 30rem;">
-                                <h3 class="card-header text-center">Новый пользователь</h3>
-                                <div class="card-body">
-                                  <div class="form-group">
-                                    <label for="firstname" class="form-label mt-4">Имя</label>
-                                    <input type="text" class="form-control" id="firstname" placeholder="Имя">
+        content.innerHTML =`<div id="card">
+                                <div id="card-content">
+                                  <div id="card-title">
+                                    <h2>Регистрация</h2>
                                   </div>
-                                  <div class="form-group">
-                                    <label for="lastname" class="form-label mt-4">Фамилия</label>
-                                    <input type="text" class="form-control" id="lastname" placeholder="Фамилия">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="phone" class="form-label mt-4">Телефон</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Телефон">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="login" class="form-label mt-4">Логин</label>
-                                    <input type="text" class="form-control" id="login" placeholder="Логин">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="password1" class="form-label mt-4">Пароль</label>
-                                    <input type="password" class="form-control" id="password1" placeholder="Пароль">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="password2" class="form-label mt-4">Повторить пароль</label>
-                                    <input type="password" class="form-control" id="password2" placeholder="Повторить пароль">
-                                  </div>
+                                  <form method="post" class="form">
+                                    <label for="firstname" style="padding-top:13px">Имя</label>
+                                    <input id="firstname" class="form-content" name="firstname" autocomplete="on" required />
+                                    <div class="form-border"></div>
+                                    <label for="lastname" style="padding-top:13px">Фамилия</label>
+                                    <input id="lastname" class="form-content" name="lastname" autocomplete="on" required />
+                                    <div class="form-border"></div>
+                                    <label for="phone" style="padding-top:13px">Номер телефона</label>
+                                    <input id="phone" class="form-content" name="phone" autocomplete="on" required />
+                                    <div class="form-border"></div>
+                                    <label for="login" style="padding-top:13px">Логин</label>
+                                    <input id="login" class="form-content" name="login" autocomplete="on" required />
+                                    <div class="form-border"></div>
+                                    <label for="password1" style="padding-top:22px">Пароль</label>
+                                    <input id="password1" class="form-content" type="password" name="password1" required />
+                                    <div class="form-border"></div>
+                                    <label for="password2" style="padding-top:22px">Повторите пароль</label>
+                                    <input id="password2" class="form-content" type="password" name="password2" required />
+                                    <div class="form-border"></div>
+                                    <input id="btnRegistration" type="submit" name="submit" value="Зарегистрироваться" />
+                                    <a href="#" id="login_again">Вход</a>
+                                  </form>
                                 </div>
-                                <button type="submit" id="btn_registration" class="btn btn-primary m-3">Зарегистрироваться</button>
-                            </div>`;
+                              </div>`;
         const btnRegistration = document.getElementById('btn_registration');
         btnRegistration.addEventListener('click', (e)=>{
             e.preventDefault();
             loginModule.registrationNewUser();
-        })
+        });
+        const login = document.getElementById('login_again');
+        login.addEventListener('click', (e)=>{
+            e.preventDefault();
+            viewModule.showLoginForm()();
+        });
     }
     showAdminPanelForm(){
         document.getElementById("info").innerHTML = '';

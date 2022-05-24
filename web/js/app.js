@@ -41,10 +41,24 @@ menu_login.addEventListener("click", (e) => {
 const menu_logout = document.getElementById("menu_logout");
 menu_logout.addEventListener("click",(e)=>{
     e.preventDefault();
-    toggleMenuLogin(e.target.id);
     loginModule.sendLogout();
 });
 
+
+function toggleActiveMenu(selectedElementId){
+    const listNavlinks = document.getElementsByClassName("nav-link");
+    for(let i = 0; i < listNavlinks.length; i++){
+        if(listNavlinks[i].id === selectedElementId){
+           if(!listNavlinks[i].classList.contains("active")){
+               listNavlinks[i].classList.add("active");
+           }
+        }else{
+            if(listNavlinks[i].classList.contains("active")){
+               listNavlinks[i].classList.remove("active");
+            }
+        }
+    }
+}
 
 function checkMenuPanel(){
     let role = sessionStorage.getItem('role');
@@ -63,7 +77,7 @@ function checkMenuPanel(){
         }
         if(!document.getElementById('menu_login').classList.contains('hidden')){
             document.getElementById("menu_login").classList.remove('hidden');//Показать вход
-       
+        }
         return;
     }
     role = JSON.parse(role);
@@ -104,5 +118,5 @@ function checkMenuPanel(){
         return;
     }
     }
-}
+
 checkMenuPanel();
