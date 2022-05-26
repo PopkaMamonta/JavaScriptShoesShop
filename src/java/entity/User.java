@@ -29,6 +29,7 @@ public class User implements Serializable {
     private String phone;
     private String firstname;
     private String lastname;
+    private String money;
 
     public User() {
     }
@@ -99,6 +100,7 @@ public class User implements Serializable {
         hash = 19 * hash + Objects.hashCode(this.phone);
         hash = 19 * hash + Objects.hashCode(this.firstname);
         hash = 19 * hash + Objects.hashCode(this.lastname);
+        hash = 19 * hash + Objects.hashCode(this.money);
         return hash;
     }
 
@@ -132,6 +134,9 @@ public class User implements Serializable {
         if (!Objects.equals(this.lastname, other.lastname)) {
             return false;
         }
+        if (!Objects.equals(this.money, other.money)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
@@ -150,6 +155,14 @@ public class User implements Serializable {
                 + ", firstname=" + firstname 
                 + ", lastname=" + lastname 
                 + '}';
+    }
+
+    public String getMoney() {
+        return money;
+    }
+
+    public void setMoney(String money) {
+        this.money = money;
     }
 
     

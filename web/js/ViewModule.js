@@ -72,7 +72,7 @@ class ViewModule{
                                   </form>
                                 </div>
                               </div>`;
-        const btnRegistration = document.getElementById('btn_registration');
+        const btnRegistration = document.getElementById('btnRegistration');
         btnRegistration.addEventListener('click', (e)=>{
             e.preventDefault();
             loginModule.registrationNewUser();
@@ -87,127 +87,124 @@ class ViewModule{
         document.getElementById("info").innerHTML = '';
         const content = document.getElementById('content');
         content.innerHTML = 
-            `<div class="card border-primary my-5 mx-auto" style="max-width: 30rem;">
-                <h3 class="card-header text-center">Панель администратора</h3>
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="select_users" class="form-label mt-4">Пользователи</label>
-                    <select class="form-select" id="select_users" name="selectUsers">
+            `<div id="card">
+                <div id="card-content">
+                  <div id="card-title">
+                    <h2>Изменение роли</h2>
+                  </div>
+                  <form method="post" class="form">
+                    <label for="select_users" style="padding-top:22px">Пользователи</label>
+                    <select class="form-select" id="select_users" name="selectUsers" style="margin:13px 0 13px 0">
                       
                     </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="select_roles" class="form-label mt-4">Роли</label>
-                    <select class="form-select" id="select_roles" name="selectRoles">
-                      
-                    </select>
-                  </div>
-                <button id="btnSetRole" type="submit" class="btn btn-primary m-3">Назначить роль</button>
-            </div>`;
+                    <label for="select_roles" style="padding-top:22px">Роли</label>
+                    <select class="form-select" id="select_roles" name="selectRoles" style="margin:13px 0 13px 0">
+                    <input id="btnSetRole" type="submit" name="submit" value="Назначить роль" />
+                  </form>
+                </div>
+              </div>`;
         
         document.getElementById('btnSetRole').addEventListener('click',(e)=>{
             e.preventDefault();
             adminModule.setNewRole();
         });
     }
-    showAddAccountForm(){
+    showAddShoesForm(){
         document.getElementById("info").innerHTML = '';
         const content = document.getElementById('content');
         content.innerHTML = 
-            `<div class="card border-primary mb-3 mx-auto" style="max-width: 40rem;">
-                <form id="form_add_accound">
-                    <h3 class="card-header text-center my-3">Новая учетная запись</h3>
-                    <div class="card-body">
-                      <div class="form-group">
-                        <label for="caption" class="form-label mt-4">Заголовок</label>
-                        <input type="text" class="form-control" id="caption" name="caption" placeholder="Заголовок">
+            `<div id="card">
+                    <div id="card-content">
+                      <div id="card-title">
+                        <h2>Добавление обуви</h2>
                       </div>
-                      <div class="form-group">
-                        <label for="url" class="form-label mt-4">URL</label>
-                        <input type="text" class="form-control" id="url" name="url" placeholder="URL">
-                      </div>
-                      <div class="form-group">
-                        <label for="login" class="form-label mt-4">Логин</label>
-                        <input type="text" class="form-control" id="login" name="login" placeholder="Логин">
-                      </div>
-                      <div class="form-group">
-                        <label for="password" class="form-label mt-4">Пароль</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="Пароль">
-                      </div>
-                      <div class="form-group">
-                        <label for="imageFile" class="form-label mt-4">Изображение</label>
+                      <form method="post" class="form" id="form_add_shoe">
+                        <label for="modelname" style="padding-top:13px">Название модели</label>
+                        <input id="modelname" class="form-content" name="modelname" autocomplete="on" required />
+                        <div class="form-border"></div>
+                        <label for="brand" style="padding-top:13px">Брэнд</label>
+                        <input id="brand" class="form-content" name="brand" autocomplete="on" required />
+                        <div class="form-border"></div>
+                        <label for="size" style="padding-top:13px">Размер</label>
+                        <input id="size" class="form-content" name="size" autocomplete="on" required />
+                        <div class="form-border"></div>
+                        <label for="price" style="padding-top:13px">Цена</label>
+                        <input id="price" class="form-content" name="price" autocomplete="on" required />
+                        <div class="form-border"></div>
+                        <label for="quantity" style="padding-top:13px">Количество</label>
+                        <input id="quantity" class="form-content" name="quantity" autocomplete="on" required />
+                        <div class="form-border"></div>
+                        <div class="form-group">
+                        <label for="imageFile" style="padding-top:13px>Изображение</label>
                         <input class="form-control" type="file" id="image_file" name="imageFile">
-                      </div>  
-                      <div class="w-100 text-center my-3">
-                        <button type="submit" class="btn btn-primary my-3" id="btn_add_account">Добавить</button>
-                      </div>
+                        </div> 
+                        <input id="btn_add_shoes" type="submit" name="submit" value="Добавить обувь" />
+                      </form>
                     </div>
-                </form>
-            </div>`;
-        document.getElementById('form_add_accound').addEventListener('submit',e=>{
+                  </div>`;
+        const btn_add_shoes = document.getElementById('btn_add_shoes');
+        btn_add_shoes.addEventListener('click', (e)=>{
             e.preventDefault();
-            userModule.sendNewAccountData();
+            userModule.sendNewShoe();
         });
     }
-    showListAccountsData(listAccountData){
+    showListShoes(Model){
         let content = document.getElementById('content');
         content.innerHTML = "";
         let list = document.createElement('div');
         list.classList.add('d-flex');
         list.classList.add('justify-content-center');
         content.appendChild(list);
-        for(let i = 0; i < listAccountData.length; i++){
+        for(let i = 0; i < Model.length; i++){
             list.innerHTML +=  
             `<div class="card border-primary m-3 p-2" style="max-width: 18rem;">
-                <h3 class="card-header text-center my-3">${listAccountData[i].caption}</h3>
-                <a href="${listAccountData[i].url}" target="_blank">
-                    <img src="insertFile/${listAccountData[i].pathToImage}" class="card-img-top" style="max-height: 20rem;" alt="...">
-                </a>
+                <h3 class="card-header text-center my-3">${Model[i].modelName}</h3>
+                    <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 20rem;" alt="...">
                 <div class="card-body">
-                    <p class="card-text">Логин: ${listAccountData[i].login}</p>
-                    <p class="card-text">Пароль: ${listAccountData[i].password}</p>
+                    <p class="card-text">Брэнд: ${Model[i].brand}</p>
+                    <p class="card-text">Размер: ${Model[i].size}</p>
+                    <p class="card-text">Кол-во: ${Model[i].quantity}</p>
+                    <p class="card-text">Цена: ${Model[i].price}</p>
                 </div>
-            </div>`
+            </div>`;
         }
     }
     showProfileForm(){
         let authUser = JSON.parse(sessionStorage.getItem('user'));
         const content = document.getElementById('content');
-        content.innerHTML =`<div class="card border-primary my-5 mx-auto" style="max-width: 30rem;">
-                                <h3 class="card-header text-center">Изменение профиля пользователя</h3>
-                                <div class="card-body">
-                                  <div class="form-group">
-                                    <label for="firstname" class="form-label mt-4">Имя</label>
-                                    <input type="text" class="form-control" id="firstname" placeholder="Имя" value="${authUser.firstname}">
+        content.innerHTML =`<div id="card">
+                                <div id="card-content">
+                                  <div id="card-title">
+                                    <h2>Профиль</h2>
                                   </div>
-                                  <div class="form-group">
-                                    <label for="lastname" class="form-label mt-4">Фамилия</label>
-                                    <input type="text" class="form-control" id="lastname" placeholder="Фамилия"  value="${authUser.lastname}">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="phone" class="form-label mt-4">Телефон</label>
-                                    <input type="text" class="form-control" id="phone" placeholder="Телефон"  value="${authUser.phone}">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="login" class="form-label mt-4">Логин</label>
-                                    <input type="text" class="form-control" id="login" placeholder="Логин" readonly value="${authUser.login}">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="password1" class="form-label mt-4">Пароль</label>
-                                    <input type="password" class="form-control" id="password1" placeholder="Пароль">
-                                  </div>
-                                  <div class="form-group">
-                                    <label for="password2" class="form-label mt-4">Повторить пароль</label>
-                                    <input type="password" class="form-control" id="password2" placeholder="Повторить пароль">
-                                  </div>
+                                  <form method="post" class="form">
+                                    <label for="firstname" style="padding-top:13px">Имя</label>
+                                    <input id="firstname" class="form-content" name="firstname" autocomplete="on" value="${authUser.firstname}" />
+                                    <div class="form-border"></div>
+                                    <label for="lastname" style="padding-top:13px">Фамилия</label>
+                                    <input id="lastname" class="form-content" name="lastname" autocomplete="on" value="${authUser.lastname}" />
+                                    <div class="form-border"></div>
+                                    <label for="phone" style="padding-top:13px">Номер телефона</label>
+                                    <input id="phone" class="form-content" name="phone" autocomplete="on" value="${authUser.phone}" />
+                                    <div class="form-border"></div>
+                                    <label for="login" style="padding-top:13px">Логин</label>
+                                    <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${authUser.login}" />
+                                    <div class="form-border"></div>
+                                    <label for="password1" style="padding-top:22px">Новый пароль</label>
+                                    <input id="password1" class="form-content" type="password" name="password1"/>
+                                    <div class="form-border"></div>
+                                    <label for="password2" style="padding-top:22px">Повторите пароль</label>
+                                    <input id="password2" class="form-content" type="password" name="password2"/>
+                                    <div class="form-border"></div>
+                                    <input id="btn_change_profile" type="submit" name="submit" value="Изменить профиль" />
+                                  </form>
                                 </div>
-                                <button type="submit" id="btn_change_profile" class="btn btn-primary m-3">Изменить профиль</button>
-                            </div>`;
+                              </div>`;
         const btnRegistration = document.getElementById('btn_change_profile');
         btnRegistration.addEventListener('click', (e)=>{
             e.preventDefault();
             userModule.changeProfile();
-        })
+        });
     }
     showAboutAs(){
         const content = document.getElementById('content');

@@ -1,7 +1,7 @@
 
 package servlets;
 
-import entity.AccountData;
+import entity.Model;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +23,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
-import jsonbuilders.AccountDataJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
-import session.AccountDataFacade;
+import session.ModelFacade;
 import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
@@ -46,7 +45,7 @@ public class UserServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
-    @EJB private AccountDataFacade accountDataFacade;
+    @EJB private ModelFacade modelFacade;
     
     private PasswordProtected pp = new PasswordProtected();
     
@@ -93,7 +92,7 @@ public class UserServlet extends HttpServlet {
         }
         String path = request.getServletPath();
         switch (path) {
-            case "/getListAccountData":
+            /*case "/getListAccountData":
                 String userId = request.getParameter("userId");
                 if(!userId.equals(authUser.getId().toString())){
                     job.add("listAccountData", "")
@@ -116,11 +115,11 @@ public class UserServlet extends HttpServlet {
                 try (PrintWriter out = response.getWriter()) {
                   out.println(job.build().toString());
                 } 
-                break;
-            case "/addNewAccount":
+                break;*/
+            case "/addNewShoe":
                 Part part = request.getPart("imageFile");
                 StringBuilder pathToUploadUserDir = new StringBuilder(); // создаем пустой экземпляр класса StringBuilder
-                pathToUploadUserDir.append("D:\\uploadDir\\SPTV20PasswordManager") 
+                pathToUploadUserDir.append("D:\\uploadDir\\JSShoesShop") 
                                    .append(File.separator)
                                    .append(authUser.getId().toString()); //каталог с именем равным идентификатору пользователя
                 File mkDirFile = new File(pathToUploadUserDir.toString());
@@ -143,19 +142,20 @@ public class UserServlet extends HttpServlet {
                // 3. получает из запроса url, login, password
                // 4. инициирует сущность и сохраняет ее в базу
         //----- так как данные приходят от формы, то получаем данные из запроса через метод getParameter();   
-                String caption = request.getParameter("caption");
-                String url = request.getParameter("url");
-                String login = request.getParameter("login");
-                String password = request.getParameter("password");
-                AccountData accountData = new AccountData();
-                accountData.setCaption(caption);
-                accountData.setLogin(login);
-                accountData.setPassword(password);
-                accountData.setUrl(url);
-                accountData.setPathToImage(pathToUploadFile.toString());
-                accountData.setUser(authUser);
-                accountDataFacade.create(accountData);
-                job.add("info", "Добавлен новый аккаунт");
+                String modelname = request.getParameter("modelname");
+                String brand = request.getParameter("brand");
+                String size = request.getParameter("size");
+                String price = request.getParameter("price");
+                String quantity = request.getParameter("quantity");
+                Model model = new Model();
+                model.setName(modelname);
+                model.setBrand(brand);
+                model.setPathToImage(pathToUploadFile.toString());
+                model.setSize(Integer.parseInt(size));
+                model.setPrice(Integer.parseInt(price));
+                model.setQuantity(Integer.parseInt(quantity));
+                modelFacade.create(model);
+                job.add("info", "Обувь добавлена!");
                 job.add("status", true);
                 try (PrintWriter out = response.getWriter()) {
                    out.println(job.build().toString());
@@ -166,7 +166,7 @@ public class UserServlet extends HttpServlet {
                 JsonObject jo = jsonReader.readObject();
                 int id = jo.getInt("id");
                 String newFirstname = jo.getString("newFirstname","");
-                String newLstname = jo.getString("newLstname","");
+                String newLastname = jo.getString("newLastname","");
                 String newPhone = jo.getString("newPhone","");
                 String newPassword1 = jo.getString("newPassword1","");
                 String newPassword2 = jo.getString("newPassword2","");
@@ -185,8 +185,9 @@ public class UserServlet extends HttpServlet {
                        out.println(job.build().toString());
                     } 
                 }
+                newPassword1=pp.passwordEncript(newPassword1, newUser.getSalt());
                 newUser.setFirstname(newFirstname);
-                newUser.setLastname(newLstname);
+                newUser.setLastname(newLastname);
                 newUser.setPhone(newPhone);
                 if(!"".equals(newPassword1)){
                     newUser.setPassword(newPassword1);

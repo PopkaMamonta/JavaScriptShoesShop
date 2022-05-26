@@ -33,7 +33,7 @@ public class SymmetricCrypt  implements Serializable{
     private byte[] enc;
     private static SecretKey key;
     private Cipher cipher;
-    private final String pathToFileSecret = "webpasswordmanagersecret";
+    private final String pathToFileSecret = "javascriptshoesshopsecret";
 
     public SymmetricCrypt() {
         init();

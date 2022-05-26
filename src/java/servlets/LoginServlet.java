@@ -120,7 +120,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("authUser", authUser);
                 UserJsonBuilder ujb = new UserJsonBuilder();
-                job.add("info", "Вы вошли как "+authUser.getLogin());
+                job.add("info", "Вы вошли как "+authUser.getFirstname());
                 job.add("auth",true);
                 job.add("token", session.getId());
                 job.add("user", ujb.getJsonUser(authUser));

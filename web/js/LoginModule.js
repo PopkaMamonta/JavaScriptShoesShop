@@ -22,12 +22,12 @@ class LoginModule{
     promise.then(response=> response.json())
        .then(response =>{
            if(response.auth){
-               document.getElementById('info').innerHTML = response.info;
                sessionStorage.setItem('token',JSON.stringify(response.token));
                sessionStorage.setItem('user',JSON.stringify(response.user));
                sessionStorage.setItem('role',JSON.stringify(response.role));
                checkMenuPanel();
-               userModule.getListAccountData();
+               viewModule.showProfileForm();
+               document.getElementById('info').innerHTML = response.info;
            }else{
                checkMenuPanel();
                document.getElementById('info').innerHTML = response.info;
@@ -55,8 +55,8 @@ class LoginModule{
                         sessionStorage.removeItem('role');
                      }
                     checkMenuPanel();
-                    document.getElementById('info').innerHTML = response.info;
                     viewModule.showLoginForm();
+                    document.getElementById('info').innerHTML = response.info;
                  }
      });
      
@@ -92,11 +92,11 @@ class LoginModule{
     promise.then(respnose => respnose.json())
             .then(response =>{
                 if(response.status){
-                    document.getElementById('info').innerHTML = response.info;
                     viewModule.showLoginForm();
-                }else{
                     document.getElementById('info').innerHTML = response.info;
+                }else{
                     viewModule.showRegistrationForm();
+                    document.getElementById('info').innerHTML = response.info;
                 }
             })
             .catch(error =>{
