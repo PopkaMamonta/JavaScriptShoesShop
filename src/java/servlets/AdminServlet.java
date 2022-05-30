@@ -111,10 +111,10 @@ public class AdminServlet extends HttpServlet {
                         break;
                     }
                     Role role = roleFacade.find(Long.parseLong(roleId));
-                    userRolesFacade.setUserRole(user,role);
-                    job.add("status",true);
-                    job.add("user", new UserJsonBuilder().getJsonUser(user));
-                    job.add("role", new RoleJsonBuilder().getJsonRole(role));
+                    userRolesFacade.setRoleToUser(role,user);
+                        job.add("status",true);
+                        job.add("user", new UserJsonBuilder().getJsonUser(user));
+                        job.add("role", new RoleJsonBuilder().getJsonRole(role));
                 } catch (IOException | NumberFormatException e) {
                     job.add("status",false);
                 }

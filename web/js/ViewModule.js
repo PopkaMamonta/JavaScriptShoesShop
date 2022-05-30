@@ -119,8 +119,8 @@ class ViewModule{
                         <h2>Добавление обуви</h2>
                       </div>
                       <form method="post" class="form" id="form_add_shoe">
-                        <label for="modelname" style="padding-top:13px">Название модели</label>
-                        <input id="modelname" class="form-content" name="modelname" autocomplete="on" required />
+                        <label for="model" style="padding-top:13px">Название модели</label>
+                        <input id="model" class="form-content" name="model" autocomplete="on" required />
                         <div class="form-border"></div>
                         <label for="brand" style="padding-top:13px">Брэнд</label>
                         <input id="brand" class="form-content" name="brand" autocomplete="on" required />
@@ -134,21 +134,19 @@ class ViewModule{
                         <label for="quantity" style="padding-top:13px">Количество</label>
                         <input id="quantity" class="form-content" name="quantity" autocomplete="on" required />
                         <div class="form-border"></div>
-                        <div class="form-group">
-                        <label for="imageFile" style="padding-top:13px>Изображение</label>
-                        <input class="form-control" type="file" id="image_file" name="imageFile">
-                        </div> 
+                        <label for="imageFile" style="padding-top:13px">Изображение</label>
+                        <input type="file" name="imageFile" value="imageFile" id="imageFile" style="padding:13px" required/> 
                         <input id="btn_add_shoes" type="submit" name="submit" value="Добавить обувь" />
                       </form>
                     </div>
                   </div>`;
-        const btn_add_shoes = document.getElementById('btn_add_shoes');
-        btn_add_shoes.addEventListener('click', (e)=>{
-            e.preventDefault();
-            userModule.sendNewShoe();
-        });
+                document.getElementById('form_add_shoe').addEventListener('submit',e=>{
+                    e.preventDefault();
+                    userModule.sendNewShoe();
+                });
     }
     showListShoes(Model){
+        document.getElementById("info").innerHTML = '';
         let content = document.getElementById('content');
         content.innerHTML = "";
         let list = document.createElement('div');
@@ -158,7 +156,7 @@ class ViewModule{
         for(let i = 0; i < Model.length; i++){
             list.innerHTML +=  
             `<div class="card border-primary m-3 p-2" style="max-width: 18rem;">
-                <h3 class="card-header text-center my-3">${Model[i].modelName}</h3>
+                <h3 class="card-header text-center my-3">${Model[i].name}</h3>
                     <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 20rem;" alt="...">
                 <div class="card-body">
                     <p class="card-text">Брэнд: ${Model[i].brand}</p>

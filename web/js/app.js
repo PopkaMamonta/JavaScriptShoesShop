@@ -1,4 +1,5 @@
 
+
 import {loginModule} from './LoginModule.js';
 import {viewModule} from './ViewModule.js';
 import {adminModule} from './AdminModule.js';
@@ -11,6 +12,7 @@ const menu_list_shoes = document.getElementById("menu_list_shoes");
 menu_list_shoes.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
+    userModule.getListModelData();
 });
 const menu_add_shoe = document.getElementById("menu_add_shoe");
 menu_add_shoe.addEventListener("click",(e)=>{

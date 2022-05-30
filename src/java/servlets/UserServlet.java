@@ -36,7 +36,7 @@ import tools.PasswordProtected;
  */
 @WebServlet(name = "UserServlet", urlPatterns = {
     "/getListAccountData",
-    "/addNewAccount",
+    "/addNewShoe",
     "/changeProfile",
     
 })
@@ -118,30 +118,24 @@ public class UserServlet extends HttpServlet {
                 break;*/
             case "/addNewShoe":
                 Part part = request.getPart("imageFile");
-                StringBuilder pathToUploadUserDir = new StringBuilder(); // создаем пустой экземпляр класса StringBuilder
+                StringBuilder pathToUploadUserDir = new StringBuilder();
                 pathToUploadUserDir.append("D:\\uploadDir\\JSShoesShop") 
                                    .append(File.separator)
-                                   .append(authUser.getId().toString()); //каталог с именем равным идентификатору пользователя
+                                   .append(authUser.getId().toString()); 
                 File mkDirFile = new File(pathToUploadUserDir.toString());
-                mkDirFile.mkdirs(); //Создаем путь к каталогу, где хранятся изображения для конкретного пользователя
-                StringBuilder pathToUploadFile = new StringBuilder(); // Здесь будет путь к загруженному файлу
+                mkDirFile.mkdirs();
+                StringBuilder pathToUploadFile = new StringBuilder();
                 pathToUploadFile.append(pathToUploadUserDir.toString())
                                 .append(File.separator)
                                 .append(getFileName(part));
-                File file = new File(pathToUploadFile.toString()); //Дескриптор для загружаемого файла
-                try(InputStream fileContent = part.getInputStream()){ // получаем ресурс - поток данных загружаемого файла
+                File file = new File(pathToUploadFile.toString());
+                try(InputStream fileContent = part.getInputStream()){ 
                      Files.copy(
-                             fileContent, // поток данных
-                             file.toPath(), // путь к сохраняемому файлу
-                             StandardCopyOption.REPLACE_EXISTING // опция: пересоздать файл, если такой уже есть на диске.
+                             fileContent,
+                             file.toPath(),
+                             StandardCopyOption.REPLACE_EXISTING 
                      );
                  }
-               // здесь пишем код, который:
-               // 1. создает сущность
-               // 2. получает путь к загруженному файлу для добавления его к сущности
-               // 3. получает из запроса url, login, password
-               // 4. инициирует сущность и сохраняет ее в базу
-        //----- так как данные приходят от формы, то получаем данные из запроса через метод getParameter();   
                 String modelname = request.getParameter("modelname");
                 String brand = request.getParameter("brand");
                 String size = request.getParameter("size");

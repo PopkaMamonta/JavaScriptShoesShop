@@ -28,6 +28,9 @@ class LoginModule{
                checkMenuPanel();
                viewModule.showProfileForm();
                document.getElementById('info').innerHTML = response.info;
+                const listNavlinks = document.getElementsByClassName("button");
+                listNavlinks[2].classList.add("hover");
+                listNavlinks[4].classList.remove("hover");
            }else{
                checkMenuPanel();
                document.getElementById('info').innerHTML = response.info;
@@ -57,6 +60,8 @@ class LoginModule{
                     checkMenuPanel();
                     viewModule.showLoginForm();
                     document.getElementById('info').innerHTML = response.info;
+                    const listNavlinks = document.getElementsByClassName("button");
+                    listNavlinks[3].classList.add("hover");
                  }
      });
      

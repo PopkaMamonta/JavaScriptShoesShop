@@ -70,12 +70,29 @@ public class UserRolesFacade extends AbstractFacade<UserRoles> {
         }
     }
 
-    public void setUserRole(User user, Role role) {
+    public void setRoleToUser(Role role, User user) {
         removeRolesToUser(user);
-        UserRoles ur = new UserRoles();
-        ur.setRole(role);
-        ur.setUser(user);
-        super.create(ur);
+        UserRoles userRoles=null;
+        if("ADMINISTRATOR".equals(role.getRoleName())){
+            Role roleUSER = roleFacade.findByRoleName("USER");
+            userRoles = new UserRoles();
+            userRoles.setRole(roleUSER);
+            userRoles.setUser(user);
+            this.create(userRoles);
+            Role roleADMINISTRATOR = roleFacade.findByRoleName("ADMINISTRATOR");
+            userRoles = new UserRoles();
+            userRoles.setRole(roleADMINISTRATOR);
+            userRoles.setUser(user);
+            this.create(userRoles);
+        }
+        if("USER".equals(role.getRoleName())){
+           Role roleUSER = roleFacade.findByRoleName("USER");
+            userRoles = new UserRoles();
+            userRoles.setRole(roleUSER);
+            userRoles.setUser(user);
+            this.create(userRoles);
+        }
+        
     }
 
     private void removeRolesToUser(User user) {

@@ -15,7 +15,26 @@ class UserModule{
                               }
                           })
                           .catch(error => {
-                              document.getElementById('info').innerHTML = "Ошибка сервера (showAddAccountForm)"+error;
+                              document.getElementById('info').innerHTML = "Ошибка сервера (sendNewShoe)"+error;
+                          });
+    }
+    
+    getListModelData(){
+        const model = JSON.parse(sessionStorage.getItem('model'));
+        let promiseGetListModelData = fetch('getListModelData?modelId='+model.id+'&t='+Date.now(),{
+            method: 'GET'
+        });
+        promiseGetListModelData.then(response => response.json())
+                          .then(response =>{
+                              if(response.status){
+                                  document.getElementById('info').innerHTML = response.info;
+                                  viewModule.showListShoes(response.Model);
+                              }else{
+                                  document.getElementById('info').innerHTML = response.info;
+                              }
+                          })
+                          .catch(error => {
+                              document.getElementById('info').innerHTML = "Ошибка сервера (showListShoes)"+error;
                           });
     }
 
