@@ -25,6 +25,7 @@ class LoginModule{
                sessionStorage.setItem('token',JSON.stringify(response.token));
                sessionStorage.setItem('user',JSON.stringify(response.user));
                sessionStorage.setItem('role',JSON.stringify(response.role));
+               sessionStorage.setItem('model',JSON.stringify(response.model));
                checkMenuPanel();
                viewModule.showProfileForm();
                document.getElementById('info').innerHTML = response.info;

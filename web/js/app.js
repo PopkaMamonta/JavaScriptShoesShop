@@ -8,11 +8,17 @@ import {userModule} from './UserModule.js';
 export{checkMenuPanel};
 export{toggleActiveMenu};
 
-const menu_list_shoes = document.getElementById("menu_list_shoes");
-menu_list_shoes.addEventListener("click",(e)=>{
+const menu_list_catalog = document.getElementById("menu_list_catalog");
+menu_list_catalog.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
-    userModule.getListModelData();
+    userModule.getListModel();
+});
+const menu_catalog = document.getElementById("menu_catalog");
+menu_catalog.addEventListener("click",(e)=>{
+    e.preventDefault();
+    toggleActiveMenu(e.target.id);
+    userModule.getListBuyModel();
 });
 const menu_add_shoe = document.getElementById("menu_add_shoe");
 menu_add_shoe.addEventListener("click",(e)=>{
@@ -37,23 +43,12 @@ const menu_about = document.getElementById("menu_about");
 menu_about.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
+    viewModule.showAboutAs();
 });
 const menu_contacts = document.getElementById("menu_contacts");
 menu_about.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
-});
-const menu_list_catalog = document.getElementById("menu_list_catalog");
-menu_about.addEventListener("click",(e)=>{
-    e.preventDefault();
-    toggleActiveMenu(e.target.id);
-    viewModule.showListShoes();
-});
-const menu_catalog = document.getElementById("menu_catalog");
-menu_about.addEventListener("click",(e)=>{
-    e.preventDefault();
-    toggleActiveMenu(e.target.id);
-    
 });
 const menu_login = document.getElementById("menu_login");
 menu_login.addEventListener("click", (e) => {
@@ -112,11 +107,11 @@ function checkMenuPanel(){
     }
     role = JSON.parse(role);
     if(role.roleName === 'USER'){
-        if(!document.getElementById('menu_list_catalog').classList.contains('hidden')){
-            document.getElementById('menu_list_catalog').classList.add('hidden');
+        if(document.getElementById('menu_list_catalog').classList.contains('hidden')){
+            document.getElementById('menu_list_catalog').classList.remove('hidden');
         }
         if(document.getElementById('menu_catalog').classList.contains('hidden')){
-            document.getElementById('menu_catalog').classList.remove('hidden');
+            document.getElementById('menu_catalog').classList.add('hidden');
         }
         if(document.getElementById('menu_add_shoe').classList.contains('hidden')){
             document.getElementById('menu_add_shoe').classList.remove('hidden');//Показать 

@@ -15,7 +15,7 @@ public class ModelJsonBuilder {
     public JsonObject getJsonModel(Model model){
         JsonObjectBuilder job = Json.createObjectBuilder();
         job.add("id", model.getId());
-        job.add("modelname", model.getName());
+        job.add("name", model.getName());
         job.add("brand",model.getBrand());
         job.add("price", model.getPrice());
         job.add("size", model.getSize());
@@ -23,10 +23,10 @@ public class ModelJsonBuilder {
         job.add("pathToImage", model.getPathToImage());
         return job.build();
     }
-    public JsonArray getJsonArrayModel(List<Model> listAccountData){
+    public JsonArray getJsonArrayModel(List<Model> listModelData){
         JsonArrayBuilder jab = Json.createArrayBuilder();
-        for(int i = 0; i < listAccountData.size(); i++){
-            jab.add(getJsonModel(listAccountData.get(i)));
+        for(int i = 0; i < listModelData.size(); i++){
+            jab.add(getJsonModel(listModelData.get(i)));
         }
         return jab.build();
     }

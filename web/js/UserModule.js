@@ -19,12 +19,15 @@ class UserModule{
                           });
     }
     
-    getListModelData(){
-        const model = JSON.parse(sessionStorage.getItem('model'));
-        let promiseGetListModelData = fetch('getListModelData?modelId='+model.id+'&t='+Date.now(),{
-            method: 'GET'
+    getListModel(){
+        let promiseGetListModel = fetch('getListModel',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset:utf8'
+            },
+            credentials: 'include'
         });
-        promiseGetListModelData.then(response => response.json())
+        promiseGetListModel.then(response => response.json())
                           .then(response =>{
                               if(response.status){
                                   document.getElementById('info').innerHTML = response.info;
@@ -34,7 +37,7 @@ class UserModule{
                               }
                           })
                           .catch(error => {
-                              document.getElementById('info').innerHTML = "Ошибка сервера (showListShoes)"+error;
+                              document.getElementById('info').innerHTML = "Ошибка сервера (getListShoes)"+error;
                           });
     }
 

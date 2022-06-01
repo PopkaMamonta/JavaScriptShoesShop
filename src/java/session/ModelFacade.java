@@ -6,6 +6,8 @@
 package session;
 
 import entity.Model;
+import entity.ModelData;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,4 +31,5 @@ public class ModelFacade extends AbstractFacade<Model> {
         super(Model.class);
     }
     
+
 }

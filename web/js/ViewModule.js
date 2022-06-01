@@ -119,8 +119,8 @@ class ViewModule{
                         <h2>Добавление обуви</h2>
                       </div>
                       <form method="post" class="form" id="form_add_shoe">
-                        <label for="model" style="padding-top:13px">Название модели</label>
-                        <input id="model" class="form-content" name="model" autocomplete="on" required />
+                        <label for="name" style="padding-top:13px">Название модели</label>
+                        <input id="name" class="form-content" name="name" autocomplete="on" required />
                         <div class="form-border"></div>
                         <label for="brand" style="padding-top:13px">Брэнд</label>
                         <input id="brand" class="form-content" name="brand" autocomplete="on" required />
@@ -155,19 +155,35 @@ class ViewModule{
         content.appendChild(list);
         for(let i = 0; i < Model.length; i++){
             list.innerHTML +=  
-            `<div class="card border-primary m-3 p-2" style="max-width: 18rem;">
-                <h3 class="card-header text-center my-3">${Model[i].name}</h3>
-                    <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 20rem;" alt="...">
-                <div class="card-body">
-                    <p class="card-text">Брэнд: ${Model[i].brand}</p>
-                    <p class="card-text">Размер: ${Model[i].size}</p>
-                    <p class="card-text">Кол-во: ${Model[i].quantity}</p>
-                    <p class="card-text">Цена: ${Model[i].price}</p>
-                </div>
+            `<div id="card">
+                <div id="card-content">
+                  <div id="card-title">
+                    <h2>${Model[i].name}</h2>
+                  </div>
+                  <form method="post" class="form">
+                        <div class="grid-item">
+                                <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
+                            <div class="text-body">
+                                <label for="login" style="padding-top:13px">Брэнд: </label>
+                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].brand}" />
+                                <div class="form-border"></div>
+                                <label for="login" style="padding-top:13px">Размер: </label>
+                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].size}" />
+                                <div class="form-border"></div>
+                                <label for="login" style="padding-top:13px">Количество: </label>
+                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].quantity}" />
+                                <div class="form-border"></div>
+                                <label for="login" style="padding-top:13px">Цена: </label>
+                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="$ ${Model[i].price}" />
+                                <div class="form-border"></div>
+                            </div>
+                        </div>
+                  </form>
             </div>`;
         }
     }
     showProfileForm(){
+        document.getElementById("info").innerHTML = '';
         let authUser = JSON.parse(sessionStorage.getItem('user'));
         const content = document.getElementById('content');
         content.innerHTML =`<div id="card">
@@ -205,6 +221,7 @@ class ViewModule{
         });
     }
     showAboutAs(){
+                document.getElementById("info").innerHTML = '';
         const content = document.getElementById('content');
         content.innerHTML =`<div class="card border-primary my-5 mx-auto" style="max-width: 30rem;">
                                 <h3 class="card-header text-center">Наша программа сохранения паролей для Вас!!!</h3>

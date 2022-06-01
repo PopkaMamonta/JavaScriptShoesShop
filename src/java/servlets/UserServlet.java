@@ -2,6 +2,7 @@
 package servlets;
 
 import entity.Model;
+import entity.ModelData;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
+import jsonbuilders.ModelJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
+import session.ModelDataFacade;
 import session.ModelFacade;
 import session.RoleFacade;
 import session.UserFacade;
@@ -35,7 +38,7 @@ import tools.PasswordProtected;
  * @author user
  */
 @WebServlet(name = "UserServlet", urlPatterns = {
-    "/getListAccountData",
+    "/getListModel",
     "/addNewShoe",
     "/changeProfile",
     
@@ -46,6 +49,7 @@ public class UserServlet extends HttpServlet {
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
     @EJB private ModelFacade modelFacade;
+    @EJB private ModelDataFacade modelDataFacade;
     
     private PasswordProtected pp = new PasswordProtected();
     
@@ -92,30 +96,23 @@ public class UserServlet extends HttpServlet {
         }
         String path = request.getServletPath();
         switch (path) {
-            /*case "/getListAccountData":
-                String userId = request.getParameter("userId");
-                if(!userId.equals(authUser.getId().toString())){
-                    job.add("listAccountData", "")
-                       .add("status", false)
-                       .add("info", "Вы не тот за кого себя выдаете");
-                    break;
-                }
-                List<AccountData> listAccountData = accountDataFacade.findAll(authUser);
-                if(listAccountData.isEmpty()){
-                    job.add("listAccountData", "");
+            case "/getListModel":
+                List<Model> Model = modelFacade.findAll();
+                if(Model.isEmpty()){
+                    job.add("Model", "");
                     job.add("status", true).add("info", "Список пуст");
                     try (PrintWriter out = response.getWriter()) {
                       out.println(job.build().toString());
                     } 
                     break;
                 }
-                AccountDataJsonBuilder adjb = new AccountDataJsonBuilder();
-                job.add("listAccountData", adjb.getJsonArrayAccountData(listAccountData));
+                ModelJsonBuilder mjb = new ModelJsonBuilder();
+                job.add("Model", mjb.getJsonArrayModel(Model));
                 job.add("status", true).add("info", "");
                 try (PrintWriter out = response.getWriter()) {
                   out.println(job.build().toString());
                 } 
-                break;*/
+                break;
             case "/addNewShoe":
                 Part part = request.getPart("imageFile");
                 StringBuilder pathToUploadUserDir = new StringBuilder();
@@ -136,13 +133,13 @@ public class UserServlet extends HttpServlet {
                              StandardCopyOption.REPLACE_EXISTING 
                      );
                  }
-                String modelname = request.getParameter("modelname");
+                String name = request.getParameter("name");
                 String brand = request.getParameter("brand");
                 String size = request.getParameter("size");
                 String price = request.getParameter("price");
                 String quantity = request.getParameter("quantity");
                 Model model = new Model();
-                model.setName(modelname);
+                model.setName(name);
                 model.setBrand(brand);
                 model.setPathToImage(pathToUploadFile.toString());
                 model.setSize(Integer.parseInt(size));
