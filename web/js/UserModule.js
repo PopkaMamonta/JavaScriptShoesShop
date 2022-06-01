@@ -40,6 +40,32 @@ class UserModule{
                               document.getElementById('info').innerHTML = "Ошибка сервера (getListShoes)"+error;
                           });
     }
+    
+    buyShoe(){
+        const id = document.getElementById('id').value;
+        const buyShoe = {
+            "id":id
+        };
+        let promiseBuyShoe = fetch('buyShoe',{
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset:utf8'
+            },
+            credentials: 'include',
+            body: JSON.stringify(buyShoe)
+        });
+        promiseBuyShoe.then(response => response.json())
+                          .then(response =>{
+                              if(response.status){
+                                  document.getElementById('info').innerHTML = response.info;
+                              }else{
+                                  document.getElementById('info').innerHTML = response.info;
+                              }
+                          })
+                          .catch(error => {
+                              document.getElementById('info').innerHTML = "Ошибка сервера (buyShoe)"+error;
+                          });
+    }
 
     changeProfile(){
         const authUser = JSON.parse(sessionStorage.getItem('user'));

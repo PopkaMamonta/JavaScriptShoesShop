@@ -1,8 +1,8 @@
 
 package servlets;
 
+import entity.History;
 import entity.Model;
-import entity.ModelData;
 import entity.User;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import jsonbuilders.ModelJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
-import session.ModelDataFacade;
+import session.HistoryFacade;
 import session.ModelFacade;
 import session.RoleFacade;
 import session.UserFacade;
@@ -41,15 +42,16 @@ import tools.PasswordProtected;
     "/getListModel",
     "/addNewShoe",
     "/changeProfile",
+    "/buyShoe"
     
 })
 @MultipartConfig
 public class UserServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
+    @EJB private HistoryFacade historyFacade;
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
     @EJB private ModelFacade modelFacade;
-    @EJB private ModelDataFacade modelDataFacade;
     
     private PasswordProtected pp = new PasswordProtected();
     
@@ -96,6 +98,22 @@ public class UserServlet extends HttpServlet {
         }
         String path = request.getServletPath();
         switch (path) {
+            case "/buyShoe":
+                JsonReader jsonReader = Json.createReader(request.getReader());
+                JsonObject jo = jsonReader.readObject();
+                int id = jo.getInt("id");
+                Model currentModel = modelFacade.find((long)id);
+                History history = new History();
+                history.setModel(currentModel);
+                history.setPurchaseModel(Calendar.getInstance().getTime());
+                history.setUser(authUser);
+                historyFacade.create(history);
+                job.add("info", "Обувь "+currentModel.getName()+" успешно куплена");
+                job.add("status", true);
+                try (PrintWriter out = response.getWriter()) {
+                   out.println(job.build().toString());
+                } 
+                break;
             case "/getListModel":
                 List<Model> Model = modelFacade.findAll();
                 if(Model.isEmpty()){
@@ -153,14 +171,14 @@ public class UserServlet extends HttpServlet {
                 }
                 break;
             case "/changeProfile":
-                JsonReader jsonReader = Json.createReader(request.getReader());
-                JsonObject jo = jsonReader.readObject();
-                int id = jo.getInt("id");
-                String newFirstname = jo.getString("newFirstname","");
-                String newLastname = jo.getString("newLastname","");
-                String newPhone = jo.getString("newPhone","");
-                String newPassword1 = jo.getString("newPassword1","");
-                String newPassword2 = jo.getString("newPassword2","");
+                JsonReader jsonReader1 = Json.createReader(request.getReader());
+                JsonObject jo1 = jsonReader1.readObject();
+                int id1 = jo1.getInt("id");
+                String newFirstname = jo1.getString("newFirstname","");
+                String newLastname = jo1.getString("newLastname","");
+                String newPhone = jo1.getString("newPhone","");
+                String newPassword1 = jo1.getString("newPassword1","");
+                String newPassword2 = jo1.getString("newPassword2","");
                 if(!newPassword1.equals(newPassword2)){
                     job.add("info", "Не совпадают пароли");
                     job.add("status", false);
@@ -168,7 +186,7 @@ public class UserServlet extends HttpServlet {
                        out.println(job.build().toString());
                     } 
                 }
-                User newUser = userFacade.find((long)id);
+                User newUser = userFacade.find((long)id1);
                 if(newUser == null){
                     job.add("info", "Нет такого пользователя");
                     job.add("status", false);

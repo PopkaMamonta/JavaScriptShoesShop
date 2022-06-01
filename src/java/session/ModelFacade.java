@@ -6,7 +6,6 @@
 package session;
 
 import entity.Model;
-import entity.ModelData;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

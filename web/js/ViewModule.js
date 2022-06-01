@@ -68,7 +68,7 @@ class ViewModule{
                                     <input id="password2" class="form-content" type="password" name="password2" required />
                                     <div class="form-border"></div>
                                     <input id="btnRegistration" type="submit" name="submit" value="Зарегистрироваться" />
-                                    <a href="#" id="login_again">Вход</a>
+                                    <a href="#" id="login_again" style="padding-top:15px">Вход</a>
                                   </form>
                                 </div>
                               </div>`;
@@ -158,28 +158,35 @@ class ViewModule{
             `<div id="card">
                 <div id="card-content">
                   <div id="card-title">
-                    <h2>${Model[i].name}</h2>
+                    
+                    <h2 class="hidden" id="id">${Model[i].id}</h2>
+                    <h2 id="name">${Model[i].name}</h2>
                   </div>
                   <form method="post" class="form">
                         <div class="grid-item">
                                 <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
                             <div class="text-body">
-                                <label for="login" style="padding-top:13px">Брэнд: </label>
-                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].brand}" />
+                                <label for="brand" style="padding-top:13px">Брэнд: </label>
+                                <input id="brand" class="form-content" name="brand" autocomplete="on" readonly value="${Model[i].brand}" />
                                 <div class="form-border"></div>
-                                <label for="login" style="padding-top:13px">Размер: </label>
-                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].size}" />
+                                <label for="size" style="padding-top:13px">Размер: </label>
+                                <input id="size" class="form-content" name="size" autocomplete="on" readonly value="${Model[i].size}" />
                                 <div class="form-border"></div>
-                                <label for="login" style="padding-top:13px">Количество: </label>
-                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="${Model[i].quantity}" />
+                                <label for="quantity" style="padding-top:13px">Количество: </label>
+                                <input id="quantity" class="form-content" name="quantity" autocomplete="on" readonly value="${Model[i].quantity}" />
                                 <div class="form-border"></div>
-                                <label for="login" style="padding-top:13px">Цена: </label>
-                                <input id="login" class="form-content" name="login" autocomplete="on" readonly value="$ ${Model[i].price}" />
+                                <label for="price" style="padding-top:13px">Цена: </label>
+                                <input id="price" class="form-content" name="price" autocomplete="on" readonly value="$ ${Model[i].price}" />
                                 <div class="form-border"></div>
+                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
                             </div>
                         </div>
                   </form>
             </div>`;
+        document.getElementById('btn_buy_shoe').addEventListener('click',(e)=>{
+            e.preventDefault();
+            userModule.buyShoe();
+            });
         }
     }
     showProfileForm(){
@@ -214,6 +221,45 @@ class ViewModule{
                                   </form>
                                 </div>
                               </div>`;
+        const btnRegistration = document.getElementById('btn_change_profile');
+        btnRegistration.addEventListener('click', (e)=>{
+            e.preventDefault();
+            userModule.changeProfile();
+        });
+    }
+    showModelForm(Model){
+        const id=document.getElementById("id");
+        document.getElementById("info").innerHTML = '';
+        let authUser = JSON.parse(sessionStorage.getItem('user'));
+        const content = document.getElementById('content');
+        content.innerHTML =`<div id="card">
+                <div id="card-content">
+                  <div id="card-title">
+                    
+                    <h2 class="hidden" id="id">${Model.id}</h2>
+                    <input id="name" class="form-content" name="name" autocomplete="on" value="${Model.name}" />
+                  </div>
+                  <form method="post" class="form">
+                        <div class="grid-item">
+                                <img src="insertFile/${Model.pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
+                            <div class="text-body">
+                                <label for="brand" style="padding-top:13px">Брэнд: </label>
+                                <input id="brand" class="form-content" name="brand" autocomplete="on"value="${Model.brand}" />
+                                <div class="form-border"></div>
+                                <label for="size" style="padding-top:13px">Размер: </label>
+                                <input id="size" class="form-content" name="size" autocomplete="on" value="${Model.size}" />
+                                <div class="form-border"></div>
+                                <label for="quantity" style="padding-top:13px">Количество: </label>
+                                <input id="quantity" class="form-content" name="quantity" autocomplete="on" value="${Model.quantity}" />
+                                <div class="form-border"></div>
+                                <label for="price" style="padding-top:13px">Цена: </label>
+                                <input id="price" class="form-content" name="price" autocomplete="on" value="$ ${Model.price}" />
+                                <div class="form-border"></div>
+                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
+                            </div>
+                        </div>
+                  </form>
+            </div>`;
         const btnRegistration = document.getElementById('btn_change_profile');
         btnRegistration.addEventListener('click', (e)=>{
             e.preventDefault();
