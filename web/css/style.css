@@ -383,7 +383,7 @@ label {
   margin-top: 16px;
   text-align: center;
 }
-#btnLogin, #btnRegistration, #btn_change_profile, #btnSetRole, #btn_add_shoes, #btn_buy_shoe{
+#btnLogin, #btnRegistration, #btn_change_profile, #btnSetRole, #btn_add_shoes, #btn_buy_shoe, #btn_change_model{
   background: -webkit-linear-gradient(right, #86a58d, #86a58d);
   border: none;
   border-radius: 21px;
@@ -393,11 +393,11 @@ label {
   font-family: "Raleway SemiBold", sans-serif;
   height: 42.3px;
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 30px;
   transition: 0.25s;
   width: 153px;
 }
-#btnLogin:hover ,#btnRegistration:hover, #btn_change_profile:hover, #btnSetRole:hover, #btn_add_shoes:hover, #btn_buy_shoe:hover{
+#btnLogin:hover ,#btnRegistration:hover, #btn_change_profile:hover, #btnSetRole:hover, #btn_add_shoes:hover, #btn_buy_shoe:hover ,#btn_change_model:hover{
   box-shadow: 0px 1px 18px #70967f;
 }
 

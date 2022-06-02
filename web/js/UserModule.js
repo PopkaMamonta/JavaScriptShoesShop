@@ -1,23 +1,7 @@
 import {viewModule} from './ViewModule.js';
 class UserModule{
     
-     sendNewShoe(){
-        let promiseSentShoe = fetch('addNewShoe',{
-            method: 'POST',
-            body: new FormData(document.getElementById('form_add_shoe'))
-        });
-        promiseSentShoe.then(response => response.json())
-                          .then(response =>{
-                              if(response.status){
-                                  document.getElementById('info').innerHTML = response.info;
-                              }else{
-                                  document.getElementById('info').innerHTML = response.info;
-                              }
-                          })
-                          .catch(error => {
-                              document.getElementById('info').innerHTML = "Ошибка сервера (sendNewShoe)"+error;
-                          });
-    }
+
     
     getListModel(){
         let promiseGetListModel = fetch('getListModel',{
@@ -97,9 +81,9 @@ class UserModule{
         promiseChangeProfile.then(response => response.json())
                           .then(response =>{
                               if(response.status){
-                                  document.getElementById('info').innerHTML = response.info;
                                   sessionStorage.setItem('user',JSON.stringify(response.user));
                                   viewModule.showProfileForm();
+                                  document.getElementById('info').innerHTML = response.info;
                               }else{
                                   document.getElementById('info').innerHTML = response.info;
                               }

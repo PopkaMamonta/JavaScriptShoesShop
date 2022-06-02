@@ -18,7 +18,7 @@ const menu_catalog = document.getElementById("menu_catalog");
 menu_catalog.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
-    userModule.getListBuyModel();
+    adminModule.getAdminListModel();
 });
 const menu_add_shoe = document.getElementById("menu_add_shoe");
 menu_add_shoe.addEventListener("click",(e)=>{
@@ -45,7 +45,7 @@ menu_about.addEventListener("click",(e)=>{
     toggleActiveMenu(e.target.id);
     viewModule.showAboutAs();
 });
-const menu_contacts = document.getElementById("menu_contacts");
+const menu_income = document.getElementById("menu_income");
 menu_about.addEventListener("click",(e)=>{
     e.preventDefault();
     toggleActiveMenu(e.target.id);
@@ -113,8 +113,8 @@ function checkMenuPanel(){
         if(document.getElementById('menu_catalog').classList.contains('hidden')){
             document.getElementById('menu_catalog').classList.add('hidden');
         }
-        if(document.getElementById('menu_add_shoe').classList.contains('hidden')){
-            document.getElementById('menu_add_shoe').classList.remove('hidden');//Показать 
+        if(!document.getElementById('menu_add_shoe').classList.contains('hidden')){
+            document.getElementById('menu_add_shoe').classList.add('hidden');//Показать 
         }
         if(document.getElementById('menu_profile').classList.contains('hidden')){
             document.getElementById('menu_profile').classList.remove('hidden');//Показать 

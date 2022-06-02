@@ -40,12 +40,10 @@ import tools.PasswordProtected;
  */
 @WebServlet(name = "UserServlet", urlPatterns = {
     "/getListModel",
-    "/addNewShoe",
     "/changeProfile",
     "/buyShoe"
     
 })
-@MultipartConfig
 public class UserServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
     @EJB private HistoryFacade historyFacade;
@@ -101,12 +99,23 @@ public class UserServlet extends HttpServlet {
             case "/buyShoe":
                 JsonReader jsonReader = Json.createReader(request.getReader());
                 JsonObject jo = jsonReader.readObject();
-                int id = jo.getInt("id");
-                Model currentModel = modelFacade.find((long)id);
+                String id = jo.getString("id");
+                Model currentModel = modelFacade.find(Long.parseLong(id));
+                if(Integer.parseInt(authUser.getMoney())<currentModel.getPrice()){
+                    job.add("info", "У вас не хватает средств");
+                    job.add("status", false);
+                    try (PrintWriter out = response.getWriter()) {
+                       out.println(job.build().toString());
+                    }
+                }
+                currentModel.setQuantity(currentModel.getQuantity()-1);
+                authUser.setMoney(Integer.toString(Integer.parseInt(authUser.getMoney())-currentModel.getPrice()));
                 History history = new History();
                 history.setModel(currentModel);
                 history.setPurchaseModel(Calendar.getInstance().getTime());
                 history.setUser(authUser);
+                modelFacade.edit(currentModel);
+                userFacade.edit(authUser);
                 historyFacade.create(history);
                 job.add("info", "Обувь "+currentModel.getName()+" успешно куплена");
                 job.add("status", true);
@@ -131,45 +140,7 @@ public class UserServlet extends HttpServlet {
                   out.println(job.build().toString());
                 } 
                 break;
-            case "/addNewShoe":
-                Part part = request.getPart("imageFile");
-                StringBuilder pathToUploadUserDir = new StringBuilder();
-                pathToUploadUserDir.append("D:\\uploadDir\\JSShoesShop") 
-                                   .append(File.separator)
-                                   .append(authUser.getId().toString()); 
-                File mkDirFile = new File(pathToUploadUserDir.toString());
-                mkDirFile.mkdirs();
-                StringBuilder pathToUploadFile = new StringBuilder();
-                pathToUploadFile.append(pathToUploadUserDir.toString())
-                                .append(File.separator)
-                                .append(getFileName(part));
-                File file = new File(pathToUploadFile.toString());
-                try(InputStream fileContent = part.getInputStream()){ 
-                     Files.copy(
-                             fileContent,
-                             file.toPath(),
-                             StandardCopyOption.REPLACE_EXISTING 
-                     );
-                 }
-                String name = request.getParameter("name");
-                String brand = request.getParameter("brand");
-                String size = request.getParameter("size");
-                String price = request.getParameter("price");
-                String quantity = request.getParameter("quantity");
-                Model model = new Model();
-                model.setName(name);
-                model.setBrand(brand);
-                model.setPathToImage(pathToUploadFile.toString());
-                model.setSize(Integer.parseInt(size));
-                model.setPrice(Integer.parseInt(price));
-                model.setQuantity(Integer.parseInt(quantity));
-                modelFacade.create(model);
-                job.add("info", "Обувь добавлена!");
-                job.add("status", true);
-                try (PrintWriter out = response.getWriter()) {
-                   out.println(job.build().toString());
-                }
-                break;
+
             case "/changeProfile":
                 JsonReader jsonReader1 = Json.createReader(request.getReader());
                 JsonObject jo1 = jsonReader1.readObject();
@@ -214,18 +185,7 @@ public class UserServlet extends HttpServlet {
         }
         
     }
-    private String getFileName(Part part){
-        final String partHeader = part.getHeader("content-disposition");
-        for (String content : part.getHeader("content-disposition").split(";")){
-            if(content.trim().startsWith("filename")){
-                return content
-                        .substring(content.indexOf('=')+1)
-                        .trim()
-                        .replace("\"",""); 
-            }
-        }
-        return null;
-    }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

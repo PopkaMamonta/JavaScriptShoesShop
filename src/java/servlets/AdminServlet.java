@@ -5,10 +5,15 @@
  */
 package servlets;
 
+import entity.Model;
 import entity.Role;
 import entity.User;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.json.Json;
@@ -17,12 +22,17 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+import jsonbuilders.ModelJsonBuilder;
 import jsonbuilders.RoleJsonBuilder;
 import jsonbuilders.UserJsonBuilder;
+import session.ModelFacade;
 import session.RoleFacade;
 import session.UserFacade;
 import session.UserRolesFacade;
@@ -36,13 +46,17 @@ import tools.PasswordProtected;
     "/getRoles",
     "/getUsersMap",
     "/setUserRole",
+    "/addNewShoe",
+    "/changeModel"
     
     
 })
+@MultipartConfig
 public class AdminServlet extends HttpServlet {
     @EJB private UserFacade userFacade;
     @EJB private RoleFacade roleFacade;
     @EJB private UserRolesFacade userRolesFacade;
+    @EJB private ModelFacade modelFacade;
     
     private PasswordProtected pp = new PasswordProtected();
     
@@ -61,8 +75,58 @@ public class AdminServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         JsonObjectBuilder job = Json.createObjectBuilder();
+        HttpSession session = request.getSession(false);
+        if(session == null){
+            job.add("info", "Вы не авторизованы");
+                    job.add("auth", false);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(job.build().toString());
+                    }
+                    return;
+        }
+        User authUser = (User) session.getAttribute("authUser");
+        if(authUser == null){
+            job.add("info", "Вы не авторизованы");
+                    job.add("auth", false);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(job.build().toString());
+                    }
+                    return;
+        }
+        if(!userRolesFacade.isRole("ADMINISTRATOR",authUser)){
+            job.add("info", "У вас нет необходимых разрешений");
+                    job.add("auth", false);
+                    try (PrintWriter out = response.getWriter()) {
+                        out.println(job.build().toString());
+                    }
+                    return;
+        }
         String path = request.getServletPath();
         switch (path) {
+            case "/changeModel":
+                JsonReader jsonReader1 = Json.createReader(request.getReader());
+                JsonObject jo1 = jsonReader1.readObject();
+                String id1 = jo1.getString("id","");
+                String newName = jo1.getString("newName","");
+                String newBrand = jo1.getString("newBrand","");
+                String newSize = jo1.getString("newSize","");
+                String newQuantity = jo1.getString("newQuantity","");
+                String newPrice = jo1.getString("newPrice","");
+                Model newModel = modelFacade.find(Long.parseLong(id1));
+                newModel.setName(newName);
+                newModel.setBrand(newBrand);
+                newModel.setSize(Integer.parseInt(newSize));
+                newModel.setQuantity(Integer.parseInt(newQuantity));
+                newModel.setPrice(Integer.parseInt(newPrice));
+                modelFacade.edit(newModel);
+                job.add("info", "Обувь успешно изменена");
+                job.add("status", true);
+                job.add("model", new ModelJsonBuilder().getJsonModel(newModel));
+                try (PrintWriter out = response.getWriter()) {
+                   out.println(job.build().toString());
+                } 
+                
+                break;
             case "/getRoles":
                 List<Role> listRoles = roleFacade.findAll();
                 JsonArrayBuilder jab = Json.createArrayBuilder();
@@ -95,6 +159,45 @@ public class AdminServlet extends HttpServlet {
                     out.println(job.build().toString());
                 }
                 break;
+            case "/addNewShoe":
+                Part part = request.getPart("imageFile");
+                StringBuilder pathToUploadUserDir = new StringBuilder();
+                pathToUploadUserDir.append("D:\\uploadDir\\JSShoesShop") 
+                                   .append(File.separator)
+                                   .append(authUser.getId().toString()); 
+                File mkDirFile = new File(pathToUploadUserDir.toString());
+                mkDirFile.mkdirs();
+                StringBuilder pathToUploadFile = new StringBuilder();
+                pathToUploadFile.append(pathToUploadUserDir.toString())
+                                .append(File.separator)
+                                .append(getFileName(part));
+                File file = new File(pathToUploadFile.toString());
+                try(InputStream fileContent = part.getInputStream()){ 
+                     Files.copy(
+                             fileContent,
+                             file.toPath(),
+                             StandardCopyOption.REPLACE_EXISTING 
+                     );
+                 }
+                String name = request.getParameter("name");
+                String brand = request.getParameter("brand");
+                String size = request.getParameter("size");
+                String price = request.getParameter("price");
+                String quantity = request.getParameter("quantity");
+                Model model = new Model();
+                model.setName(name);
+                model.setBrand(brand);
+                model.setPathToImage(pathToUploadFile.toString());
+                model.setSize(Integer.parseInt(size));
+                model.setPrice(Integer.parseInt(price));
+                model.setQuantity(Integer.parseInt(quantity));
+                modelFacade.create(model);
+                job.add("info", "Обувь добавлена!");
+                job.add("status", true);
+                try (PrintWriter out = response.getWriter()) {
+                   out.println(job.build().toString());
+                }
+                break;
             case "/setUserRole":
                 try {
                     JsonReader jsonReader = Json.createReader(request.getReader());
@@ -123,8 +226,21 @@ public class AdminServlet extends HttpServlet {
                 }
                 
                 break;
+                
         }
         
+    }
+    private String getFileName(Part part){
+        final String partHeader = part.getHeader("content-disposition");
+        for (String content : part.getHeader("content-disposition").split(";")){
+            if(content.trim().startsWith("filename")){
+                return content
+                        .substring(content.indexOf('=')+1)
+                        .trim()
+                        .replace("\"",""); 
+            }
+        }
+        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

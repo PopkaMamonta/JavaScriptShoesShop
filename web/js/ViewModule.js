@@ -80,7 +80,7 @@ class ViewModule{
         const login = document.getElementById('login_again');
         login.addEventListener('click', (e)=>{
             e.preventDefault();
-            viewModule.showLoginForm()();
+            viewModule.showLoginForm();
         });
     }
     showAdminPanelForm(){
@@ -142,7 +142,7 @@ class ViewModule{
                   </div>`;
                 document.getElementById('form_add_shoe').addEventListener('submit',e=>{
                     e.preventDefault();
-                    userModule.sendNewShoe();
+                    adminModule.sendNewShoe();
                 });
     }
     showListShoes(Model){
@@ -159,13 +159,13 @@ class ViewModule{
                 <div id="card-content">
                   <div id="card-title">
                     
-                    <h2 class="hidden" id="id">${Model[i].id}</h2>
                     <h2 id="name">${Model[i].name}</h2>
                   </div>
                   <form method="post" class="form">
                         <div class="grid-item">
                                 <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
                             <div class="text-body">
+                                <input id="id" class="hidden" value="${Model[i].id}" />
                                 <label for="brand" style="padding-top:13px">Брэнд: </label>
                                 <input id="brand" class="form-content" name="brand" autocomplete="on" readonly value="${Model[i].brand}" />
                                 <div class="form-border"></div>
@@ -176,17 +176,17 @@ class ViewModule{
                                 <input id="quantity" class="form-content" name="quantity" autocomplete="on" readonly value="${Model[i].quantity}" />
                                 <div class="form-border"></div>
                                 <label for="price" style="padding-top:13px">Цена: </label>
-                                <input id="price" class="form-content" name="price" autocomplete="on" readonly value="$ ${Model[i].price}" />
+                                <input id="price" class="form-content" name="price" autocomplete="on" readonly value="${Model[i].price}" />
                                 <div class="form-border"></div>
-                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
                             </div>
+                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
                         </div>
                   </form>
             </div>`;
-        document.getElementById('btn_buy_shoe').addEventListener('click',(e)=>{
-            e.preventDefault();
-            userModule.buyShoe();
-            });
+            document.getElementById('btn_buy_shoe').addEventListener('click',(e)=>{
+                e.preventDefault();
+                userModule.buyShoe();
+                });
         }
     }
     showProfileForm(){
@@ -228,43 +228,53 @@ class ViewModule{
         });
     }
     showModelForm(Model){
-        const id=document.getElementById("id");
         document.getElementById("info").innerHTML = '';
-        let authUser = JSON.parse(sessionStorage.getItem('user'));
-        const content = document.getElementById('content');
-        content.innerHTML =`<div id="card">
+        let content = document.getElementById('content');
+        content.innerHTML = "";
+        let list = document.createElement('div');
+        list.classList.add('d-flex');
+        list.classList.add('justify-content-center');
+        content.appendChild(list);
+        for(let i = 0; i < Model.length; i++){
+            list.innerHTML +=  
+            `<div id="card">
                 <div id="card-content">
                   <div id="card-title">
-                    
-                    <h2 class="hidden" id="id">${Model.id}</h2>
-                    <input id="name" class="form-content" name="name" autocomplete="on" value="${Model.name}" />
+                    <input id="name" class="card-title" name="name" autocomplete="on" value="${Model[i].name}" />
                   </div>
                   <form method="post" class="form">
                         <div class="grid-item">
-                                <img src="insertFile/${Model.pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
+                                <img src="insertFile/${Model[i].pathToImage}" class="card-img-top" style="max-height: 24rem;" alt="...">
                             <div class="text-body">
+                                <input id="id" class="hidden" value="${Model[i].id}" />
                                 <label for="brand" style="padding-top:13px">Брэнд: </label>
-                                <input id="brand" class="form-content" name="brand" autocomplete="on"value="${Model.brand}" />
+                                <input id="brand" class="form-content" name="brand" autocomplete="on" value="${Model[i].brand}" />
                                 <div class="form-border"></div>
                                 <label for="size" style="padding-top:13px">Размер: </label>
-                                <input id="size" class="form-content" name="size" autocomplete="on" value="${Model.size}" />
+                                <input id="size" class="form-content" name="size" autocomplete="on" value="${Model[i].size}" />
                                 <div class="form-border"></div>
                                 <label for="quantity" style="padding-top:13px">Количество: </label>
-                                <input id="quantity" class="form-content" name="quantity" autocomplete="on" value="${Model.quantity}" />
+                                <input id="quantity" class="form-content" name="quantity" autocomplete="on" value="${Model[i].quantity}" />
                                 <div class="form-border"></div>
                                 <label for="price" style="padding-top:13px">Цена: </label>
-                                <input id="price" class="form-content" name="price" autocomplete="on" value="$ ${Model.price}" />
+                                <input id="price" class="form-content" name="price" autocomplete="on" value="${Model[i].price}" />
                                 <div class="form-border"></div>
-                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
                             </div>
+                                <input id="btn_buy_shoe" type="submit" name="submit" value="Купить обувь" />
+                                <input id="btn_change_model" type="submit" name="submit" value="Изменить обувь" />
                         </div>
                   </form>
             </div>`;
-        const btnRegistration = document.getElementById('btn_change_profile');
-        btnRegistration.addEventListener('click', (e)=>{
+        document.getElementById('btn_buy_shoe').addEventListener('click',(e)=>{
             e.preventDefault();
-            userModule.changeProfile();
+            userModule.buyShoe();
+            });
+        const btnChangeModel = document.getElementById('btn_change_model');
+        btnChangeModel.addEventListener('click', (e)=>{
+            e.preventDefault();
+            adminModule.changeModel();
         });
+        }
     }
     showAboutAs(){
                 document.getElementById("info").innerHTML = '';
